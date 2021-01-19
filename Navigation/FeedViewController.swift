@@ -12,8 +12,8 @@ final class FeedViewController: UIViewController {
     
     
     
-    let post: Post = Post(title: "Пост")
-    
+    let post: Post = Post(title: "Post")
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         print(type(of: self), #function)
@@ -27,15 +27,17 @@ final class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(type(of: self), #function)
-
         
         let stackViewButtons = UIStackView()
+        stackViewButtons.axis = .vertical
         stackViewButtons.spacing = 10
         stackViewButtons.alignment = .fill
         stackViewButtons.distribution = .fillEqually
         stackViewButtons.translatesAutoresizingMaskIntoConstraints = false
         
-        let buttonOpen: UIButton = {
+        
+        
+             let buttonOpen: UIButton = {
             let button = UIButton(type: .system)
     
             button.backgroundColor = .yellow
@@ -51,6 +53,7 @@ final class FeedViewController: UIViewController {
             button.setTitleColor(.black, for: .normal)
             button.backgroundColor = .yellow
             button.translatesAutoresizingMaskIntoConstraints = false
+            button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
             return button
         }()
         
@@ -67,10 +70,10 @@ final class FeedViewController: UIViewController {
                                         
     }
     @objc func buttonPressed() {
-    let postPage = PostViewController()
-    present(postPage, animated: true, completion: nil)
-        
-        
+
+        let postStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let postViewController = postStoryboard.instantiateViewController(withIdentifier: "Post") as! PostViewController
+        self.present(postViewController, animated: true, completion: nil)
         
     }
 

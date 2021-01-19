@@ -20,8 +20,8 @@ class ProfileHeaderView: UIView {
     @IBOutlet var textField: UITextField!
     @IBOutlet var statusButton: UIButton!
     
-    override func setNeedsLayout() {
-        super.setNeedsLayout()
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
         //        profileImage
         profileImage.layer.cornerRadius = 60
@@ -55,7 +55,7 @@ class ProfileHeaderView: UIView {
         textField.textColor = .black
         textField.addTarget(self, action: #selector(statusTextChanged(_:)), for: .editingChanged)
         
-        layoutSubviews()
+        
     }
     
     private var statusText: String?
