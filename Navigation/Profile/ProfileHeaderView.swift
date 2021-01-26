@@ -10,53 +10,62 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     
-    @IBOutlet var profileImage: UIImageView! {
-        didSet {
-            profileImage.image = UIImage(named: "major.jpg")
-        }
-    }
-    @IBOutlet var profileTitle: UILabel!
-    @IBOutlet var profileInfo: UILabel!
-    @IBOutlet var textField: UITextField!
-    @IBOutlet var statusButton: UIButton!
+    var profileImage: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "major.jpg")
+        image.layer.cornerRadius = 60
+        image.layer.borderColor = UIColor.white.cgColor
+        image.layer.borderWidth = 3
+        image.clipsToBounds = true
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
+    }()
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    
+    var profileTitle: UILabel = {
+        let title = UILabel()
+        title.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        title.textColor = .black
+        title.text = "Major Tom"
+        title.translatesAutoresizingMaskIntoConstraints = false
+        return title
         
-        //        profileImage
-        profileImage.layer.cornerRadius = 60
-        profileImage.layer.borderColor = UIColor.white.cgColor
-        profileImage.layer.borderWidth = 3
-        profileImage.clipsToBounds = true
-        //        profileTitle
-        profileTitle.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        profileTitle.textColor = .black
-        profileTitle.text = "Major Tom"
-        profileInfo.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        //        profileInfo
-        profileInfo.textColor = .gray
-        profileInfo.text = "Ground Control to Major Tom"
-        //        statusButton
-        statusButton.setTitle("Show status", for: .normal)
-        statusButton.setTitleColor(.white, for: .normal)
-        statusButton.backgroundColor = .systemBlue
-        statusButton.layer.cornerRadius = 4
-        statusButton.layer.shadowOffset = CGSize(width: 4, height: 4)
-        statusButton.layer.shadowRadius = 4
-        statusButton.layer.shadowColor = UIColor.black.cgColor
-        statusButton.layer.shadowOpacity = 0.7
-        statusButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        //        textField
-        textField.layer.cornerRadius = 12
-        textField.layer.borderColor = UIColor.black.cgColor
-        textField.layer.borderWidth = 1
-        textField.backgroundColor = .white
-        textField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        textField.textColor = .black
-        textField.addTarget(self, action: #selector(statusTextChanged(_:)), for: .editingChanged)
+    }()
+    var profileInfo: UILabel = {
+        let info = UILabel()
+        info.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        info.textColor = .gray
+        info.translatesAutoresizingMaskIntoConstraints = false
+        info.text = "Ground Control to Major Tom"
+        return info
+    }()
+    var textField: UITextField = {
+        let text = UITextField()
+        text.layer.cornerRadius = 12
+        text.layer.borderColor = UIColor.black.cgColor
+        text.layer.borderWidth = 1
+        text.backgroundColor = .white
+        text.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        text.textColor = .black
+        text.translatesAutoresizingMaskIntoConstraints = false
+        text.addTarget(self, action: #selector(statusTextChanged(_:)), for: .editingChanged)
+        return text
+    }()
+    var statusButton: UIButton = {
+        let button = UIButton(type: .system)
         
-        
-    }
+        button.setTitle("Show status", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 4
+        button.layer.shadowOffset = CGSize(width: 4, height: 4)
+        button.layer.shadowRadius = 4
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.7
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        return button
+    }()
     
     private var statusText: String?
     
