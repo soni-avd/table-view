@@ -10,73 +10,93 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-     var profileHeaderView: ProfileHeaderView! = {
-       let hv = ProfileHeaderView()
-        hv.translatesAutoresizingMaskIntoConstraints = false
-        return hv
+    private lazy var profileTableView: UITableView = {
+        let tv = UITableView(frame: .zero, style: .grouped)
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.delegate = self
+        tv.dataSource = self
+        tv.register(ProfileTableViewCell.self, forCellReuseIdentifier: String(describing: ProfileTableViewCell.self))
+        tv.register(PhotosTableViewCell.self, forCellReuseIdentifier: String(describing: PhotosTableViewCell.self))
+        tv.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: ProfileHeaderView.self))
+        return tv
     }()
-
-
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .lightGray
-        view.addSubview(profileHeaderView)
-        profileHeaderView.addSubview(profileHeaderView.profileImage)
-        profileHeaderView.addSubview(profileHeaderView.profileTitle)
-        profileHeaderView.addSubview(profileHeaderView.profileInfo)
-        profileHeaderView.addSubview(profileHeaderView.textField)
-        profileHeaderView.addSubview(profileHeaderView.statusButton)
-        profileHeaderView.backgroundColor = .yellow
-        view.addSubview(newButton)
-        newButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileTableView)
         
-        NSLayoutConstraint.activate([
-            newButton.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-            newButton.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-            newButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            
-            profileHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            profileHeaderView.heightAnchor.constraint(equalToConstant: 220),
+        let constraints = [
+            profileTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            profileTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            profileTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            profileTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+}
 
-            profileHeaderView.profileImage.topAnchor.constraint(equalTo: profileHeaderView.topAnchor, constant: 16),
-            profileHeaderView.profileImage.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 16),
-            profileHeaderView.profileImage.heightAnchor.constraint(equalToConstant: 120),
-            profileHeaderView.profileImage.widthAnchor.constraint(equalToConstant: 120),
-            
-            
-            profileHeaderView.profileTitle.topAnchor.constraint(equalTo: profileHeaderView.topAnchor, constant: 27),
-            profileHeaderView.profileTitle.heightAnchor.constraint(equalToConstant: 30),
-            profileHeaderView.profileTitle.leadingAnchor.constraint(equalTo: profileHeaderView.profileImage.trailingAnchor, constant: 16),
-            profileHeaderView.profileTitle.widthAnchor.constraint(equalToConstant: 180),
-
-            profileHeaderView.statusButton.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 16),
-            profileHeaderView.statusButton.trailingAnchor.constraint(equalTo: profileHeaderView.trailingAnchor, constant: -16),
-            profileHeaderView.statusButton.heightAnchor.constraint(equalToConstant: 50),
-            profileHeaderView.statusButton.topAnchor.constraint(equalTo: profileHeaderView.profileImage.bottomAnchor, constant: 16),
-
-            profileHeaderView.profileInfo.leadingAnchor.constraint(equalTo: profileHeaderView.profileImage.trailingAnchor, constant: 16),
-            profileHeaderView.profileInfo.topAnchor.constraint(equalTo: profileHeaderView.profileTitle.bottomAnchor, constant: 16),
-            profileHeaderView.profileInfo.heightAnchor.constraint(equalToConstant: 20),
-            profileHeaderView.profileInfo.widthAnchor.constraint(equalToConstant: 200),
-            
-            profileHeaderView.textField.bottomAnchor.constraint(equalTo: profileHeaderView.statusButton.topAnchor, constant: -15),
-            profileHeaderView.textField.leadingAnchor.constraint(equalTo: profileHeaderView.profileTitle.leadingAnchor),
-            profileHeaderView.textField.heightAnchor.constraint(equalToConstant: 40),
-            profileHeaderView.textField.widthAnchor.constraint(equalToConstant: 200)
-            
-           
-        ])
+extension ProfileViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        switch section {
+        case 0:
+            let headerview = ProfileHeaderView()
+            return headerview
+        default:
+            return nil
+        }
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 0:
+            return 220
+        default:
+            return .zero
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let photosViewController = PhotosViewController()
+        navigationController?.pushViewController(photosViewController, animated: true)
         
     }
+}
+
+extension ProfileViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            return Storage.tableModel.count
+        default:
+            break
+        }
+        return section
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-     var newButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Open", for: .normal)
-        button.backgroundColor = .purple
-        return button
-    }()
+        switch indexPath.section {
+        case 0:
+            let cell: PhotosTableViewCell = tableView.dequeueReusableCell(withIdentifier: String(describing: PhotosTableViewCell.self)) as! PhotosTableViewCell
+            cell.photoProfile = StoragePhotoProfile.tableModel
+            cell.accessoryType = .disclosureIndicator
+            return cell
+            
+        case 1:
+            let cell: ProfileTableViewCell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: indexPath) as! ProfileTableViewCell
+            cell.post = Storage.tableModel[indexPath.row]
+            return cell
+        default:
+            let cell: ProfileTableViewCell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: indexPath) as! ProfileTableViewCell
+            cell.post = Storage.tableModel[indexPath.row]
+            return cell
+        }
+    }
+    
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
 }

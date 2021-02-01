@@ -8,8 +8,16 @@
 
 import UIKit
 
-class ProfileHeaderView: UIView {
+class ProfileHeaderView: UITableViewHeaderFooterView {
     
+    
+   var profileHeaderView: UIView! = {
+      let hv = UIView()
+    hv.backgroundColor = .lightGray
+       hv.translatesAutoresizingMaskIntoConstraints = false
+       return hv
+   }()
+
     var profileImage: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "major.jpg")
@@ -67,6 +75,8 @@ class ProfileHeaderView: UIView {
         return button
     }()
     
+   
+    
     private var statusText: String?
     
     @objc func buttonPressed() {
@@ -78,6 +88,67 @@ class ProfileHeaderView: UIView {
     
     @objc func statusTextChanged(_ textField: UITextField) {
         statusText = textField.text
+    }
+    
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        setupViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+ 
+
+    func setupViews() {
+        contentView.addSubview(profileHeaderView)
+        profileHeaderView.addSubview(profileImage)
+        profileHeaderView.addSubview(profileTitle)
+        profileHeaderView.addSubview(profileInfo)
+        profileHeaderView.addSubview(textField)
+        profileHeaderView.addSubview(statusButton)
+
+        NSLayoutConstraint.activate([
+
+            profileHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            profileHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            profileHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            profileHeaderView.heightAnchor.constraint(equalToConstant: 220),
+
+            profileImage.topAnchor.constraint(equalTo: profileHeaderView.topAnchor, constant: 16),
+            profileImage.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 16),
+            profileImage.heightAnchor.constraint(equalToConstant: 120),
+            profileImage.widthAnchor.constraint(equalToConstant: 120),
+
+
+            profileTitle.topAnchor.constraint(equalTo: profileHeaderView.topAnchor, constant: 27),
+         profileTitle.heightAnchor.constraint(equalToConstant: 30),
+            profileTitle.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16),
+            profileTitle.widthAnchor.constraint(equalToConstant: 180),
+
+//            statusButton.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 16),
+//            statusButton.trailingAnchor.constraint(equalTo: profileHeaderView.trailingAnchor, constant: -16),
+            statusButton.widthAnchor.constraint(equalTo: profileHeaderView.widthAnchor, multiplier: 0.9),
+            statusButton.centerXAnchor.constraint(equalTo: profileHeaderView.centerXAnchor),
+            statusButton.heightAnchor.constraint(equalToConstant: 50),
+            statusButton.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 16),
+
+            profileInfo.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16),
+            profileInfo.topAnchor.constraint(equalTo: profileTitle.bottomAnchor, constant: 16),
+            profileInfo.heightAnchor.constraint(equalToConstant: 20),
+            profileInfo.widthAnchor.constraint(equalToConstant: 200),
+
+            textField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -15),
+            textField.leadingAnchor.constraint(equalTo: profileTitle.leadingAnchor),
+            textField.heightAnchor.constraint(equalToConstant: 40),
+            textField.widthAnchor.constraint(equalToConstant: 200)
+
+
+        ])
+
+
+
     }
 }
 
