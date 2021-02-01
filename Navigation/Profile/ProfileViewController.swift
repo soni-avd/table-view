@@ -21,11 +21,14 @@ class ProfileViewController: UIViewController {
         return tv
     }()
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileTableView)
-        
+        navigationController?.isNavigationBarHidden = true
+
+
+                
         let constraints = [
             profileTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             profileTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -34,6 +37,9 @@ class ProfileViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+  
+    
 }
 
 extension ProfileViewController: UITableViewDelegate {

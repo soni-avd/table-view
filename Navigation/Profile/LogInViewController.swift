@@ -83,8 +83,7 @@ class LogInViewController: UIViewController {
     @objc func buttonTapped() {
         print("button tapped")
         let profileViewController = ProfileViewController()
-        self.present(profileViewController, animated: true, completion: nil)
-        
+        navigationController?.pushViewController(profileViewController, animated: true)
     }
     
     //    MARK: viewDidLoad
