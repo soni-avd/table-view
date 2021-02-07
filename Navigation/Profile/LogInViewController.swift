@@ -23,7 +23,10 @@ class LogInViewController: UIViewController {
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fillEqually
+        stack.layer.borderWidth = 0.5
+        stack.layer.cornerRadius = 10
         stack.spacing = 0
+        stack.layer.masksToBounds = true
         return stack
     }()
     let logInEmail: UITextField = {
@@ -33,7 +36,8 @@ class LogInViewController: UIViewController {
         email.backgroundColor = .systemGray6
         email.layer.borderColor = UIColor.lightGray.cgColor
         email.layer.borderWidth = 0.5
-        email.layer.cornerRadius = 10
+        email.leftView = .init(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        email.leftViewMode = .always
         email.textColor = .black
         email.font = .systemFont(ofSize: 16)
         return email
@@ -41,15 +45,15 @@ class LogInViewController: UIViewController {
     
     let logInPassword: UITextField = {
         let email = UITextField()
-        
         email.placeholder = "Password"
         email.translatesAutoresizingMaskIntoConstraints = false
         email.backgroundColor = .systemGray6
         email.layer.borderColor = UIColor.lightGray.cgColor
         email.layer.borderWidth = 0.5
-        email.layer.cornerRadius = 10
         email.isSecureTextEntry = true
         email.textColor = .black
+        email.leftView = .init(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        email.leftViewMode = .always
         email.font = .systemFont(ofSize: 16)
         return email
     }()
@@ -89,22 +93,19 @@ class LogInViewController: UIViewController {
     //    MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        hidesBottomBarWhenPushed = true
         view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         [logInImage,stackLogIn,logInButton].forEach{
-            containerView.addSubview($0)
+            containerView.addSubview($0) }
             stackLogIn.addArrangedSubview(logInEmail)
             stackLogIn.addArrangedSubview(logInPassword)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }

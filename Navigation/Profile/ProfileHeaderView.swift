@@ -120,17 +120,15 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
             profileImage.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 16),
             profileImage.heightAnchor.constraint(equalToConstant: 120),
             profileImage.widthAnchor.constraint(equalToConstant: 120),
-
-
+            
+            
             profileTitle.topAnchor.constraint(equalTo: profileHeaderView.topAnchor, constant: 27),
-         profileTitle.heightAnchor.constraint(equalToConstant: 30),
+            profileTitle.heightAnchor.constraint(equalToConstant: 30),
             profileTitle.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16),
             profileTitle.widthAnchor.constraint(equalToConstant: 180),
 
-//            statusButton.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 16),
-//            statusButton.trailingAnchor.constraint(equalTo: profileHeaderView.trailingAnchor, constant: -16),
-            statusButton.widthAnchor.constraint(equalTo: profileHeaderView.widthAnchor, multiplier: 0.9),
-            statusButton.centerXAnchor.constraint(equalTo: profileHeaderView.centerXAnchor),
+            statusButton.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 16),
+            statusButton.trailingAnchor.constraint(equalTo: profileHeaderView.trailingAnchor, constant: -16),
             statusButton.heightAnchor.constraint(equalToConstant: 50),
             statusButton.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 16),
 
@@ -138,12 +136,12 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
             profileInfo.topAnchor.constraint(equalTo: profileTitle.bottomAnchor, constant: 16),
             profileInfo.heightAnchor.constraint(equalToConstant: 20),
             profileInfo.widthAnchor.constraint(equalToConstant: 200),
-
+            
             textField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -15),
             textField.leadingAnchor.constraint(equalTo: profileTitle.leadingAnchor),
             textField.heightAnchor.constraint(equalToConstant: 40),
             textField.widthAnchor.constraint(equalToConstant: 200)
-
+           
 
         ])
 

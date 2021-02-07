@@ -20,26 +20,20 @@ class ProfileViewController: UIViewController {
         tv.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: ProfileHeaderView.self))
         return tv
     }()
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileTableView)
         navigationController?.isNavigationBarHidden = true
-
-
-                
+        
         let constraints = [
-            profileTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            profileTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            profileTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            profileTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            profileTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            profileTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            profileTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            profileTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }
-    
-  
-    
 }
 
 extension ProfileViewController: UITableViewDelegate {
@@ -64,7 +58,6 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let photosViewController = PhotosViewController()
         navigationController?.pushViewController(photosViewController, animated: true)
-        
     }
 }
 
@@ -82,26 +75,18 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        switch indexPath.section {
-        case 0:
+        if indexPath.section == 0 {
             let cell: PhotosTableViewCell = tableView.dequeueReusableCell(withIdentifier: String(describing: PhotosTableViewCell.self)) as! PhotosTableViewCell
-            cell.photoProfile = StoragePhotoProfile.tableModel
-            cell.accessoryType = .disclosureIndicator
+                      cell.photoProfile = StoragePhotoProfile.tableModel
             return cell
+        } else {
             
-        case 1:
             let cell: ProfileTableViewCell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: indexPath) as! ProfileTableViewCell
             cell.post = Storage.tableModel[indexPath.row]
             return cell
-        default:
-            let cell: ProfileTableViewCell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProfileTableViewCell.self), for: indexPath) as! ProfileTableViewCell
-            cell.post = Storage.tableModel[indexPath.row]
-            return cell
-        }
     }
-    
-    
+
+    }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }

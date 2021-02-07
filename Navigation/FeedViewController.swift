@@ -73,8 +73,7 @@ final class FeedViewController: UIViewController {
 
         let postStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let postViewController = postStoryboard.instantiateViewController(withIdentifier: "Post") as! PostViewController
-        self.present(postViewController, animated: true, completion: nil)
-        
+        navigationController?.pushViewController(postViewController, animated: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {

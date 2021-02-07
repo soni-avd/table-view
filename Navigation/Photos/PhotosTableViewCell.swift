@@ -20,9 +20,9 @@ class PhotosTableViewCell: UITableViewCell {
             
         }
     }
-
+    
     let photoLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.font = .systemFont(ofSize: 24, weight: .bold)
@@ -53,7 +53,7 @@ class PhotosTableViewCell: UITableViewCell {
         photo.layer.cornerRadius = 6
         return photo
     }()
-
+    
     let forthPhoto: UIImageView = {
         let photo = UIImageView()
         photo.clipsToBounds = true
@@ -61,11 +61,29 @@ class PhotosTableViewCell: UITableViewCell {
         photo.layer.cornerRadius = 6
         return photo
     }()
-
+    
+    let photoStack: UIStackView = {
+        let stack = UIStackView()
+        stack.alignment = .fill
+        stack.axis = .horizontal
+        stack.spacing = 8
+        stack.distribution = .fillEqually
+        stack.contentMode = .scaleAspectFill
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    let pointer: UIImageView = {
+        let pointer = UIImageView()
+        pointer.image = UIImage(named: "right-arrow.png")
+//        pointer.clipsToBounds = true
+        pointer.translatesAutoresizingMaskIntoConstraints = false
+        return pointer
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpViews()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -74,42 +92,33 @@ class PhotosTableViewCell: UITableViewCell {
     
     
     func setUpViews() {
-        [photoLabel, firstPhoto, secondPhoto, thirdPhoto, forthPhoto].forEach{contentView.addSubview($0)}
+        photoStack.addArrangedSubview(firstPhoto)
+        photoStack.addArrangedSubview(secondPhoto)
+        photoStack.addArrangedSubview(thirdPhoto)
+        photoStack.addArrangedSubview(forthPhoto)
+    
+        contentView.addSubview(photoLabel)
+        contentView.addSubview(photoStack)
+        contentView.addSubview(pointer)
         
         let constraints = [
             photoLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             photoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            photoLabel.bottomAnchor.constraint(equalTo: firstPhoto.topAnchor, constant: -12),
+          
+            photoStack.topAnchor.constraint(equalTo: photoLabel.bottomAnchor, constant: 12),
+            photoStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            photoStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            photoStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+            photoStack.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.25, constant: -(8 * 3 + 12 * 2) / 4),
             
-            firstPhoto.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            firstPhoto.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-            firstPhoto.trailingAnchor.constraint(equalTo: secondPhoto.leadingAnchor, constant: -8),
-            firstPhoto.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.25),
-            firstPhoto.heightAnchor.constraint(equalTo: firstPhoto.widthAnchor),
+            pointer.centerYAnchor.constraint(equalTo: photoLabel.centerYAnchor),
+            pointer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            pointer.heightAnchor.constraint(equalToConstant: 20),
+            pointer.widthAnchor.constraint(equalToConstant: 20)
             
-            secondPhoto.leadingAnchor.constraint(equalTo: firstPhoto.trailingAnchor, constant: 8),
-            secondPhoto.trailingAnchor.constraint(equalTo: thirdPhoto.leadingAnchor, constant: -8),
-            secondPhoto.bottomAnchor.constraint(equalTo: firstPhoto.bottomAnchor),
-            secondPhoto.widthAnchor.constraint(equalTo: firstPhoto.widthAnchor),
-            secondPhoto.heightAnchor.constraint(equalTo: firstPhoto.widthAnchor),
-
-            
-            thirdPhoto.leadingAnchor.constraint(equalTo: secondPhoto.trailingAnchor, constant: 8),
-            thirdPhoto.trailingAnchor.constraint(equalTo: forthPhoto.leadingAnchor, constant: -8),
-            thirdPhoto.bottomAnchor.constraint(equalTo: firstPhoto.bottomAnchor),
-            thirdPhoto.widthAnchor.constraint(equalTo: firstPhoto.widthAnchor),
-            thirdPhoto.heightAnchor.constraint(equalTo: firstPhoto.widthAnchor),
-
-            forthPhoto.leadingAnchor.constraint(equalTo: thirdPhoto.trailingAnchor, constant: 8),
-            forthPhoto.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            forthPhoto.bottomAnchor.constraint(equalTo: firstPhoto.bottomAnchor),
-            forthPhoto.widthAnchor.constraint(equalTo: firstPhoto.widthAnchor),
-            forthPhoto.heightAnchor.constraint(equalTo: firstPhoto.widthAnchor),
-            
-
         ]
         NSLayoutConstraint.activate(constraints)
-
-
+        
+        
     }
 }

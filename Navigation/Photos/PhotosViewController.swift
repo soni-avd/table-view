@@ -32,14 +32,16 @@ final class PhotosViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        navigationController?.isNavigationBarHidden = false
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 }
 

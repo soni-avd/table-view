@@ -39,4 +39,5 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
 }
