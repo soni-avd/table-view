@@ -12,12 +12,11 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     var profileHeaderView: UIView! = {
         let hv = UIView()
         hv.backgroundColor = .lightGray
-        hv.isUserInteractionEnabled = true
         hv.translatesAutoresizingMaskIntoConstraints = false
         return hv
     }()
     
-    var profileImage: UIImageView = {
+    lazy var profileImage: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "major.jpg")
         image.layer.cornerRadius = 60
@@ -73,31 +72,8 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         return button
     }()
-    //    var transparentView: UIView = {
-    //        var tv = UIView()
-    //        tv.translatesAutoresizingMaskIntoConstraints = false
-    //        tv.backgroundColor = .blue
-    //        return tv
-    //    }()
-    //    var profileVC = ProfileViewController()
-    private var statusText: String?
-    //    @objc func tap() {
-    //        print(#function)
-    //        profileHeaderView.addSubview(transparentView)
-    //        self.transparentView.frame = .init(x: 0,
-    //                                           y: 0,
-    //                                           width: self.contentView.bounds.width,
-    //                                           height: self.contentView.bounds.height)
-    //        self.transparentView.transform = self.transparentView.transform.scaledBy(x: 2, y: 2)
-    //        transparentView.addSubview(profileImage)
-    //        self.profileImage.frame = .init(x: self.contentView.bounds.midX,
-    //                                        y: self.contentView.bounds.midY,
-    //                                        width: 120,
-    //                                        height: 120)
-    //        self.profileImage.transform = self.profileImage.transform.scaledBy(x: 1.5, y: 1.5)
-    //
-    //
-    //    }
+       private var statusText: String?
+
     @objc func buttonPressed() {
         print("\(profileInfo.text!)")
         if let statusText = statusText {
@@ -112,8 +88,6 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
-        //        let tapAvatar = UITapGestureRecognizer(target: self, action: #selector(tap))
-        //        profileImage.addGestureRecognizer(tapAvatar)
     }
     
     required init?(coder: NSCoder) {
@@ -141,18 +115,17 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
             profileImage.heightAnchor.constraint(equalToConstant: 120),
             profileImage.widthAnchor.constraint(equalToConstant: 120),
             
-            
             profileTitle.topAnchor.constraint(equalTo: profileHeaderView.topAnchor, constant: 27),
             profileTitle.heightAnchor.constraint(equalToConstant: 30),
-            profileTitle.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16),
+            profileTitle.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 152),
             profileTitle.widthAnchor.constraint(equalToConstant: 180),
             
             statusButton.widthAnchor.constraint(equalTo: profileHeaderView.widthAnchor, multiplier: 0.9),
             statusButton.centerXAnchor.constraint(equalTo: profileHeaderView.centerXAnchor),
             statusButton.heightAnchor.constraint(equalToConstant: 50),
-            statusButton.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 16),
+            statusButton.bottomAnchor.constraint(equalTo: profileHeaderView.bottomAnchor, constant: -16),
             
-            profileInfo.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16),
+            profileInfo.leadingAnchor.constraint(equalTo: profileTitle.leadingAnchor),
             profileInfo.topAnchor.constraint(equalTo: profileTitle.bottomAnchor, constant: 16),
             profileInfo.heightAnchor.constraint(equalToConstant: 20),
             profileInfo.widthAnchor.constraint(equalTo:statusButton.widthAnchor, multiplier: 0.5),
