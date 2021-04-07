@@ -10,7 +10,7 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    private lazy var profileTableView: UITableView = {
+     lazy var profileTableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .grouped)
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.delegate = self
@@ -18,14 +18,25 @@ class ProfileViewController: UIViewController {
         tv.register(ProfileTableViewCell.self, forCellReuseIdentifier: String(describing: ProfileTableViewCell.self))
         tv.register(PhotosTableViewCell.self, forCellReuseIdentifier: String(describing: PhotosTableViewCell.self))
         tv.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: ProfileHeaderView.self))
+        tv.isUserInteractionEnabled = true
         return tv
     }()
-
-    override func viewDidLoad() {
+    var transparentView: UIView = {
+       var tv = UIView()
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.backgroundColor = .blue
+        return tv
+    }()
+        override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileTableView)
         navigationController?.isNavigationBarHidden = true
-        
+            let tapAvatar = UITapGestureRecognizer(target: self, action: #selector(tap))
+            tapAvatar.delegate = self
+//            tapAvatar.numberOfTapsRequired = 1
+            ProfileHeaderView().isUserInteractionEnabled = true
+            ProfileHeaderView().profileImage.addGestureRecognizer(tapAvatar)
+            
         let constraints = [
             profileTableView.topAnchor.constraint(equalTo: view.topAnchor),
             profileTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -34,14 +45,15 @@ class ProfileViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    @objc func tap() {
+        print(#function)
+    }
 }
-
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section {
         case 0:
-            let headerview = ProfileHeaderView()
-            return headerview
+            return ProfileHeaderView()
         default:
             return nil
         }
@@ -54,13 +66,11 @@ extension ProfileViewController: UITableViewDelegate {
             return .zero
         }
     }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let photosViewController = PhotosViewController()
         navigationController?.pushViewController(photosViewController, animated: true)
     }
 }
-
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
@@ -85,9 +95,14 @@ extension ProfileViewController: UITableViewDataSource {
             cell.post = Storage.tableModel[indexPath.row]
             return cell
     }
-
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
+    }
+}
+extension ProfileViewController: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
     }
 }

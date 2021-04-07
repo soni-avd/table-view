@@ -14,7 +14,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     var photo: UIImageView = {
         var photo = UIImageView()
         photo.translatesAutoresizingMaskIntoConstraints = false
-        photo.contentMode = .scaleAspectFit
+        photo.contentMode = .scaleToFill
         return photo
     }()
     

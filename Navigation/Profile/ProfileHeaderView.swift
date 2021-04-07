@@ -9,15 +9,14 @@
 import UIKit
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
+    var profileHeaderView: UIView! = {
+        let hv = UIView()
+        hv.backgroundColor = .lightGray
+        hv.isUserInteractionEnabled = true
+        hv.translatesAutoresizingMaskIntoConstraints = false
+        return hv
+    }()
     
-    
-   var profileHeaderView: UIView! = {
-      let hv = UIView()
-    hv.backgroundColor = .lightGray
-       hv.translatesAutoresizingMaskIntoConstraints = false
-       return hv
-   }()
-
     var profileImage: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "major.jpg")
@@ -25,10 +24,11 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         image.layer.borderColor = UIColor.white.cgColor
         image.layer.borderWidth = 3
         image.clipsToBounds = true
+        image.contentMode = .scaleAspectFill
+        image.isUserInteractionEnabled = true
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-    
     
     var profileTitle: UILabel = {
         let title = UILabel()
@@ -61,7 +61,6 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }()
     var statusButton: UIButton = {
         let button = UIButton(type: .system)
-        
         button.setTitle("Show status", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
@@ -74,11 +73,31 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         return button
     }()
-    
-   
-    
+    //    var transparentView: UIView = {
+    //        var tv = UIView()
+    //        tv.translatesAutoresizingMaskIntoConstraints = false
+    //        tv.backgroundColor = .blue
+    //        return tv
+    //    }()
+    //    var profileVC = ProfileViewController()
     private var statusText: String?
-    
+    //    @objc func tap() {
+    //        print(#function)
+    //        profileHeaderView.addSubview(transparentView)
+    //        self.transparentView.frame = .init(x: 0,
+    //                                           y: 0,
+    //                                           width: self.contentView.bounds.width,
+    //                                           height: self.contentView.bounds.height)
+    //        self.transparentView.transform = self.transparentView.transform.scaledBy(x: 2, y: 2)
+    //        transparentView.addSubview(profileImage)
+    //        self.profileImage.frame = .init(x: self.contentView.bounds.midX,
+    //                                        y: self.contentView.bounds.midY,
+    //                                        width: 120,
+    //                                        height: 120)
+    //        self.profileImage.transform = self.profileImage.transform.scaledBy(x: 1.5, y: 1.5)
+    //
+    //
+    //    }
     @objc func buttonPressed() {
         print("\(profileInfo.text!)")
         if let statusText = statusText {
@@ -93,14 +112,14 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
+        //        let tapAvatar = UITapGestureRecognizer(target: self, action: #selector(tap))
+        //        profileImage.addGestureRecognizer(tapAvatar)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
- 
-
+    
     func setupViews() {
         contentView.addSubview(profileHeaderView)
         profileHeaderView.addSubview(profileImage)
@@ -108,14 +127,15 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         profileHeaderView.addSubview(profileInfo)
         profileHeaderView.addSubview(textField)
         profileHeaderView.addSubview(statusButton)
-
+        
+        
         NSLayoutConstraint.activate([
-
+            
             profileHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
             profileHeaderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             profileHeaderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             profileHeaderView.heightAnchor.constraint(equalToConstant: 220),
-
+            
             profileImage.topAnchor.constraint(equalTo: profileHeaderView.topAnchor, constant: 16),
             profileImage.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 16),
             profileImage.heightAnchor.constraint(equalToConstant: 120),
@@ -126,27 +146,22 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
             profileTitle.heightAnchor.constraint(equalToConstant: 30),
             profileTitle.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16),
             profileTitle.widthAnchor.constraint(equalToConstant: 180),
-
-            statusButton.leadingAnchor.constraint(equalTo: profileHeaderView.leadingAnchor, constant: 16),
-            statusButton.trailingAnchor.constraint(equalTo: profileHeaderView.trailingAnchor, constant: -16),
+            
+            statusButton.widthAnchor.constraint(equalTo: profileHeaderView.widthAnchor, multiplier: 0.9),
+            statusButton.centerXAnchor.constraint(equalTo: profileHeaderView.centerXAnchor),
             statusButton.heightAnchor.constraint(equalToConstant: 50),
             statusButton.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 16),
-
+            
             profileInfo.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16),
             profileInfo.topAnchor.constraint(equalTo: profileTitle.bottomAnchor, constant: 16),
             profileInfo.heightAnchor.constraint(equalToConstant: 20),
-            profileInfo.widthAnchor.constraint(equalToConstant: 200),
+            profileInfo.widthAnchor.constraint(equalTo:statusButton.widthAnchor, multiplier: 0.5),
             
             textField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -15),
             textField.leadingAnchor.constraint(equalTo: profileTitle.leadingAnchor),
             textField.heightAnchor.constraint(equalToConstant: 40),
-            textField.widthAnchor.constraint(equalToConstant: 200)
-           
-
+            textField.widthAnchor.constraint(equalTo: statusButton.widthAnchor, multiplier: 0.5)
         ])
-
-
-
     }
 }
 
