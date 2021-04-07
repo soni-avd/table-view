@@ -27,9 +27,9 @@ class ProfileViewController: UIViewController {
         tv.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.5)
         return tv
     }()
-   
+    
     let hv = ProfileHeaderView()
-
+    
     let buttonX: UIButton = {
         let x = UIButton(type: .close)
         x.translatesAutoresizingMaskIntoConstraints = false
@@ -50,52 +50,53 @@ class ProfileViewController: UIViewController {
     }
     @objc func tap() {
         print(#function)
-        self.hv.addSubview(self.transparentView)
-    self.transparentView.frame = .init(x: self.view.bounds.minX,
-                                       y: self.view.bounds.minY,
-                                        width: self.view.bounds.width,
-                                        height: self.view.bounds.height)
-    self.transparentView.transform = self.transparentView.transform.scaledBy(x: 2, y: 2)
-        let startAnimator = UIViewPropertyAnimator(duration: 1, curve: .easeInOut) {
-           
+        
+        let startAnimator = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut) {
+            self.hv.addSubview(self.transparentView)
+            self.transparentView.frame = .init(x: self.view.bounds.minX,
+                                               y: self.view.bounds.minY,
+                                               width: self.view.bounds.width,
+                                               height: self.view.bounds.height)
+            self.transparentView.transform = self.transparentView.transform.scaledBy(x: 2, y: 2)
             self.transparentView.addSubview(self.hv.profileImage)
             self.hv.addSubview(self.buttonX)
             self.hv.profileImage.alpha = 1
-        self.hv.profileImage.frame = .init(x: 100,
-                                         y: self.view.bounds.height / 2 - 60,
-                                         width: 120,
-                                         height: 120)
+            self.hv.profileImage.frame = .init(x: 100,
+                                               y: self.view.bounds.height / 2 - 60,
+                                               width: 120,
+                                               height: 120)
             self.hv.profileImage.layer.cornerRadius = 0
-        self.hv.profileImage.transform = self.hv.profileImage.transform.scaledBy(x: 1.3, y: 1.3)
-        
-        self.buttonX.frame = .init(x: self.view.bounds.maxX - 15,
-                                   y: self.view.bounds.minY,
-                                   width: 15,
-                                   height: 15)
- 
-    }
-        startAnimator.startAnimation()
-        let finishAnimator = UIViewPropertyAnimator(duration: 1, curve: .easeInOut) { [self] in
-            buttonX.addTarget(self, action: #selector(closeAnimation), for: .touchUpInside)
+            self.hv.profileImage.transform = self.hv.profileImage.transform.scaledBy(x: 1.3, y: 1.3)
+            
+            self.buttonX.frame = .init(x: self.view.bounds.maxX - 15,
+                                       y: self.view.bounds.minY,
+                                       width: 15,
+                                       height: 15)
+            
         }
-        finishAnimator.startAnimation()
+        startAnimator.startAnimation()
     }
+    
     @objc func closeAnimation() {
         print(#function)
         transparentView.frame = .init(x: 0,
                                       y: 0,
                                       width: 0,
                                       height: 0)
-        hv.addSubview(hv.profileImage)
-        NSLayoutConstraint.activate([
-            hv.profileImage.topAnchor.constraint(equalTo: hv.topAnchor, constant: 16),
-            hv.profileImage.leadingAnchor.constraint(equalTo: hv.leadingAnchor, constant: 16),
-            hv.profileImage.heightAnchor.constraint(equalToConstant: 120),
-            hv.profileImage.widthAnchor.constraint(equalToConstant: 120),
-                    ])
-        hv.profileImage.transform = hv.profileImage.transform.scaledBy(x: 0.7, y: 0.7)
-        hv.profileImage.layer.cornerRadius = 60
-        buttonX.alpha = 0
+        
+        let finishAnimator = UIViewPropertyAnimator(duration: 1, curve: .easeInOut) { [self] in
+            hv.addSubview(hv.profileImage)
+            NSLayoutConstraint.activate([
+                hv.profileImage.topAnchor.constraint(equalTo: hv.topAnchor, constant: 16),
+                hv.profileImage.leadingAnchor.constraint(equalTo: hv.leadingAnchor, constant: 16),
+                hv.profileImage.heightAnchor.constraint(equalToConstant: 120),
+                hv.profileImage.widthAnchor.constraint(equalToConstant: 120),
+            ])
+            hv.profileImage.transform = hv.profileImage.transform.scaledBy(x: 0.7, y: 0.7)
+            hv.profileImage.layer.cornerRadius = 60
+            buttonX.alpha = 0
+        }
+        finishAnimator.startAnimation()
     }
     
 }
@@ -106,6 +107,8 @@ extension ProfileViewController: UITableViewDelegate {
             hv.isUserInteractionEnabled = true
             let tapAvatar = UITapGestureRecognizer(target: self, action: #selector(tap))
             hv.profileImage.addGestureRecognizer(tapAvatar)
+            let closeAvatar = UITapGestureRecognizer(target: self, action: #selector(closeAnimation))
+            buttonX.addGestureRecognizer(closeAvatar)
             return hv
         default:
             return nil
