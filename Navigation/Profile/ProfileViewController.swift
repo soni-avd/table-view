@@ -78,16 +78,17 @@ class ProfileViewController: UIViewController {
         print(#function)
         transparentView.alpha = 0
         buttonX.alpha = 0
-        hv.profileImage.frame = .init(x: 16, y: 16, width: 120, height: 120)
+        
         
     }
     @objc func tap() {
         print(#function)
-        UIView.animateKeyframes(withDuration: 2, delay: 0, options: .calculationModeLinear, animations: {
+        UIView.animateKeyframes(withDuration: 2, delay: 0, options: .beginFromCurrentState, animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1) {
                 self.transparentView.backgroundColor = .white
                 self.transparentView.alpha = 0.5
                 self.hv.profileImage.translatesAutoresizingMaskIntoConstraints = true
+//
                 self.hv.profileImage.frame = .init(x: self.view.bounds.minX + 100,
                                                    y: self.view.bounds.height / 2 - 60,
                                                    width: self.view.bounds.width - 200,
