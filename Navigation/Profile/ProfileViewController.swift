@@ -67,8 +67,8 @@ class ProfileViewController: UIViewController {
             buttonX.widthAnchor.constraint(equalToConstant: 15),
             buttonX.heightAnchor.constraint(equalToConstant: 15),
             
-            hv.profileImage.topAnchor.constraint(equalTo: profileTableView.topAnchor, constant: 16),
-            hv.profileImage.leadingAnchor.constraint(equalTo: profileTableView.leadingAnchor, constant: 16),
+            hv.profileImage.topAnchor.constraint(equalTo: hv.topAnchor, constant: 16),
+            hv.profileImage.leadingAnchor.constraint(equalTo: hv.leadingAnchor, constant: 16),
             hv.profileImage.heightAnchor.constraint(equalToConstant: 120),
             hv.profileImage.widthAnchor.constraint(equalToConstant: 120),
         ]
@@ -76,27 +76,35 @@ class ProfileViewController: UIViewController {
     }
     @objc func closeAnimation() {
         print(#function)
-        transparentView.alpha = 0
-        buttonX.alpha = 0
-        
-        
+        UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                self.buttonX.alpha = 0
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                self.hv.profileImage.transform = .identity
+                self.transparentView.alpha = 0
+                self.hv.profileImage.layer.cornerRadius = 60
+                
+
+            }
+        }, completion: { finished in
+            print(finished)
+        })
     }
+        
     @objc func tap() {
         print(#function)
-        UIView.animateKeyframes(withDuration: 2, delay: 0, options: .beginFromCurrentState, animations: {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1) {
+        UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: .beginFromCurrentState, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
                 self.transparentView.backgroundColor = .white
                 self.transparentView.alpha = 0.5
                 self.hv.profileImage.translatesAutoresizingMaskIntoConstraints = true
-//
-                self.hv.profileImage.frame = .init(x: self.view.bounds.minX + 100,
-                                                   y: self.view.bounds.height / 2 - 60,
-                                                   width: self.view.bounds.width - 200,
-                                                   height: 180)
-                self.hv.profileImage.transform = self.hv.profileImage.transform.scaledBy(x: 2, y: 2)
+                self.hv.profileImage.transform = self.hv.profileImage.transform.translatedBy(x: self.view.bounds.minX + 90,
+                                                                                             y: self.view.bounds.height / 2 - 60)
+                self.hv.profileImage.transform = self.hv.profileImage.transform.scaledBy(x: 2.5, y: 2.5)
+                self.hv.profileImage.layer.cornerRadius = 0
             }
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 2) {
-                self.view.addSubview(self.buttonX)
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.3) {
                 self.buttonX.alpha = 1
             }
            
