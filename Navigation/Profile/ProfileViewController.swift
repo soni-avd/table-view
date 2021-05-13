@@ -39,7 +39,7 @@ class ProfileViewController: UIViewController {
         x.alpha = 0
         return x
     }()
-    
+    var currentAnimation = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileTableView)
@@ -62,8 +62,8 @@ class ProfileViewController: UIViewController {
             transparentView.trailingAnchor.constraint(equalTo: profileTableView.trailingAnchor),
             transparentView.bottomAnchor.constraint(equalTo: profileTableView.bottomAnchor),
             
-            buttonX.topAnchor.constraint(equalTo: hv.safeAreaLayoutGuide.topAnchor, constant: 15),
-            buttonX.trailingAnchor.constraint(equalTo: hv.trailingAnchor, constant: -15),
+            buttonX.topAnchor.constraint(equalTo: transparentView.safeAreaLayoutGuide.topAnchor, constant: 15),
+            buttonX.trailingAnchor.constraint(equalTo: transparentView.trailingAnchor, constant: -15),
             buttonX.widthAnchor.constraint(equalToConstant: 15),
             buttonX.heightAnchor.constraint(equalToConstant: 15),
             
@@ -76,38 +76,59 @@ class ProfileViewController: UIViewController {
     }
     @objc func closeAnimation() {
         print(#function)
-        UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [], animations: {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+        UIView.animateKeyframes(withDuration: 0.8, delay: 0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.3) {
                 self.buttonX.alpha = 0
+                self.hv.profileImage.layoutIfNeeded()
+
             }
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-                self.hv.profileImage.transform = .identity
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                self.hv.profileImage.translatesAutoresizingMaskIntoConstraints = false
+//                self.hv.profileImage.transform = .identity
                 self.transparentView.alpha = 0
                 self.hv.profileImage.layer.cornerRadius = 60
-                
 
+                
             }
         }, completion: { finished in
             print(finished)
         })
     }
-        
+    
     @objc func tap() {
         print(#function)
-        UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: .beginFromCurrentState, animations: {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+        currentAnimation += 1
+        if currentAnimation > 7 {
+            currentAnimation = 0
+        }
+        
+        UIView.animateKeyframes(withDuration: 0.8, delay: 0, options: .calculationModeLinear, animations: {
+            switch self.currentAnimation {
+            
+            case 1: UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
                 self.transparentView.backgroundColor = .white
                 self.transparentView.alpha = 0.5
                 self.hv.profileImage.translatesAutoresizingMaskIntoConstraints = true
-                self.hv.profileImage.transform = self.hv.profileImage.transform.translatedBy(x: self.view.bounds.minX + 90,
-                                                                                             y: self.view.bounds.height / 2 - 60)
-                self.hv.profileImage.transform = self.hv.profileImage.transform.scaledBy(x: 2.5, y: 2.5)
+//                self.hv.profileImage.transform = self.hv.profileImage.transform.translatedBy(
+//                    x: self.view.bounds.minX,
+//                    y: self.view.bounds.midY - self.hv.profileImage.bounds.height)
+//                self.hv.profileImage.transform = self.hv.profileImage.transform.scaledBy(x: 2, y: 2)
+
+                self.hv.profileImage.frame = .init(origin: .init(
+                                                    x: self.view.bounds.minX,
+                                                    y: self.view.bounds.midY - self.hv.profileImage.bounds.height),
+                                                   size: .init(width: self.view.bounds.width,
+                                                               height: self.view.bounds.height / 2))
+
                 self.hv.profileImage.layer.cornerRadius = 0
             }
-            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.3) {
+            UIView.addKeyframe(withRelativeStartTime: 1, relativeDuration: 0.3) {
                 self.buttonX.alpha = 1
             }
-           
+            default:
+                break
+            }
+            
         }, completion: { finished in
             print(finished)
         })
@@ -115,7 +136,7 @@ class ProfileViewController: UIViewController {
 }
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-       
+        
         return hv
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
